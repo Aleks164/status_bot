@@ -4,8 +4,7 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "start": "node bot",
-    "start2": "node checkProgram"
+    "start": "node bot"
   },
   "keywords": [],
   "author": "",

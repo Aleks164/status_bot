@@ -4,9 +4,9 @@ const buildComplexCheck = require("./checkProgram");
 require("dotenv/config");
 
 const key = process.env.BOT_TOKEN;
-// const targetId = process.env.TARGET_ID;
+const targetId = process.env.TARGET_ID;
 const myId = process.env.MY_ID;
-const timeInterval = 60 * 1000; // 1 minute
+const timeInterval = 60 * 1000 * 10; // 10 minute
 
 let checkSummary = [];
 let lastCheckTime = "";
@@ -16,36 +16,39 @@ let timeOutId;
 const helpMessage =
   "Основные комманды:\n/start - начать проверку\n/lastCheck - последний результат\n/stop - остановить проверку?\n/help - Основные комманды";
 
-// const bot = new Telegraf(process.env.BOT_TOKEN);
 const bot = new Telegraf(key);
 
 bot.start((ctx) => ctx.reply(helpMessage));
 bot.launch();
 
+const tryCheck = async () => {
+  const mainList = await getApartmentCount();
+  const buildComplex = await buildComplexCheck();
+  lastCheckTime = new Date().toLocaleString("ru-RU", {
+    timeZone: "Europe/Moscow",
+  });
+  checkSummary = [mainList, ...buildComplex];
+  const errors = checkSummary.filter((item) => item.error);
+  if (errors.length) {
+    const answer = [
+      lastCheckTime + " мск",
+      ...checkSummary.map((check) => check.message),
+    ].join("\n");
+    bot.telegram.sendMessage(myId, answer);
+    bot.telegram.sendMessage(targetId, answer);
+  }
+};
+
 const doTick = () => {
-  if (isCheckRunning)
+  if (isCheckRunning) {
     timeOutId = setTimeout(async () => {
-      const mainList = await getApartmentCount();
-      const buildComplex = await buildComplexCheck();
-      lastCheckTime = new Date().toLocaleString("ru-RU", {
-        timeZone: "Europe/Moscow",
-      });
-      checkSummary = [mainList, ...buildComplex];
-      const errors = checkSummary.filter((item) => item.error);
-      if (errors.length)
-        bot.telegram.sendMessage(
-          myId,
-          [
-            lastCheckTime + " мск",
-            ...checkSummary.map((check) => check.message),
-          ].join("\n")
-        );
-      // bot.telegram.sendMessage(targetId, checkSummary);
+      await tryCheck();
       doTick();
     }, timeInterval);
-  else clearTimeout(timeOutId);
+  } else clearTimeout(timeOutId);
 };
 doTick();
+setTimeout(tryCheck, 10000);
 
 bot.on("message", (ctx) => {
   bot.telegram.sendMessage(
@@ -61,6 +64,7 @@ bot.on("message", (ctx) => {
     }
     case "/stop": {
       clearTimeout(timeOutId);
+      isCheckRunning = false;
       return ctx.reply("Bot stopped");
     }
     case "/lastCheck": {

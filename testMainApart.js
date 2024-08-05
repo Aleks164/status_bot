@@ -43,5 +43,3 @@ async function getApartmentCount() {
 }
 
 module.exports = getApartmentCount;
-
-// t.me/quad_status_bot
