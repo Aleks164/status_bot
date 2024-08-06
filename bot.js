@@ -14,7 +14,7 @@ let isCheckRunning = true;
 let timeOutId;
 
 const helpMessage =
-  "Основные комманды:\n/start - начать проверку\n/lastCheck - последний результат\n/stop - остановить проверку?\n/help - Основные комманды";
+  "Основные комманды:\n/start - начать проверку\n/lastCheck - последний результат\n/stop - остановить проверку\n/help - Основные комманды";
 
 const bot = new Telegraf(key);
 
@@ -32,7 +32,7 @@ const tryCheck = async () => {
   if (errors.length) {
     const answer = [
       lastCheckTime + " мск",
-      ...checkSummary.map((check) => check.message),
+      ...errors.map((check) => check.message),
     ].join("\n");
     bot.telegram.sendMessage(myId, answer);
     bot.telegram.sendMessage(targetId, answer);
