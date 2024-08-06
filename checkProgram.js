@@ -2,7 +2,28 @@ const axios = require("axios");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
-const checkURLList = ["https://kvadroom.ru/zhk-novo-molokovo"];
+const checkURLList = [
+  "https://kvadroom.ru/zhk-buninskie-kvartaly",
+  "https://kvadroom.ru/zhiloy-rayon-skandinaviya",
+  "https://kvadroom.ru/zhk-yuzhnye-sady",
+  "https://kvadroom.ru/businovskiy-park",
+  "https://kvadroom.ru/polar",
+  "https://kvadroom.ru/plehanova-11",
+  "https://kvadroom.ru/moskvoreche",
+  "https://kvadroom.ru/zhk-novo-molokovo",
+  "https://kvadroom.ru/zhk-yuzhnaya-dolina",
+  "https://kvadroom.ru/zhk-belyj-mys",
+  "https://kvadroom.ru/zhk-novoe-pushkino",
+  "https://kvadroom.ru/zhk-injoy-indzhoy",
+  "https://kvadroom.ru/zhk-novoe-vidnoe",
+  "https://kvadroom.ru/zhk-ostafevo",
+  "https://kvadroom.ru/zhk-prigorod-lesnoe",
+  "https://kvadroom.ru/level-michurinskiy",
+  "https://kvadroom.ru/level-nizhegorodskaya",
+  "https://kvadroom.ru/rayon-novye-vatutinki",
+  "https://kvadroom.ru/zhk-luchi",
+  "https://kvadroom.ru/zhk-ravnovesie",
+];
 const baseLink = "https://kvadroom.ru";
 const headers = {
   "User-Agent": "YandexBot",
@@ -41,5 +62,3 @@ function getApartmentCount(link) {
 }
 
 module.exports = buildComplexCheck;
-
-// t.me/quad_status_bot
