@@ -37,7 +37,7 @@ async function getApartmentCount() {
     .catch((error) => {
       return {
         error: true,
-        message: baseLink + " - Error fetching data: " + error,
+        message: baseLink + " - Error: " + error,
       };
     });
 }

@@ -57,7 +57,7 @@ function getApartmentCount(link) {
       return { error: true, message: `!!! ${link} - ${apart} !!!` };
     })
     .catch((error) => {
-      return { error: true, message: link + "Error fetching data: " + error };
+      return { error: true, message: link + " Error: " + error };
     });
 }
 
