@@ -29,11 +29,11 @@ const tryCheck = async () => {
   });
   checkSummary = [
     {
-      message: "группировки жк",
+      message: "\n------группировки жк------\n",
     },
     ...apartmentGroup,
     {
-      message: "ЖК",
+      message: "\n------ЖК------\n",
     },
     ...buildComplex,
   ];
