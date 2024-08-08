@@ -1,6 +1,6 @@
 const { Telegraf } = require("telegraf");
-const getApartmentCount = require("./testMainApart");
-const buildComplexCheck = require("./checkProgram");
+const apartmentGroupCheck = require("./apartmentGroupCheck.js");
+const buildComplexCheck = require("./buildComplexCheck.js");
 require("dotenv/config");
 
 const key = process.env.BOT_TOKEN;
@@ -22,17 +22,46 @@ bot.start((ctx) => ctx.reply(helpMessage));
 bot.launch();
 
 const tryCheck = async () => {
-  const mainList = await getApartmentCount();
+  const apartmentGroup = await apartmentGroupCheck();
   const buildComplex = await buildComplexCheck();
   lastCheckTime = new Date().toLocaleString("ru-RU", {
     timeZone: "Europe/Moscow",
   });
-  checkSummary = [mainList, ...buildComplex];
-  const errors = checkSummary.filter((item) => item.error);
-  if (errors.length) {
+  checkSummary = [
+    {
+      message: "группировки жк",
+    },
+    ...apartmentGroup,
+    {
+      message: "ЖК",
+    },
+    ...buildComplex,
+  ];
+  const apartmentGroupErrors = apartmentGroup.filter((item) => item.error);
+  const buildComplexErrors = buildComplex.filter((item) => item.error);
+  if (apartmentGroupErrors.length || buildComplexErrors.length) {
+    const preparedGroup = apartmentGroupErrors.length
+      ? [
+          {
+            message: "группировки жк",
+          },
+          ...apartmentGroupErrors,
+        ]
+      : [];
+    const preparedGroupBuild = buildComplexErrors.length
+      ? [
+          ,
+          {
+            message: "ЖК",
+          },
+          ...buildComplexErrors,
+        ]
+      : [];
     const answer = [
       lastCheckTime + " мск",
-      ...errors.map((check) => check.message),
+      ...[...preparedGroup, ...preparedGroupBuild].map(
+        (check) => check.message
+      ),
     ].join("\n");
     bot.telegram.sendMessage(myId, answer);
     bot.telegram.sendMessage(targetId, answer);

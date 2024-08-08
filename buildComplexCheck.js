@@ -1,5 +1,6 @@
 const axios = require("axios");
 const jsdom = require("jsdom");
+const complexCheck = require("./complexCheck");
 const { JSDOM } = jsdom;
 
 const checkURLList = [
@@ -24,18 +25,13 @@ const checkURLList = [
   "https://kvadroom.ru/zhk-luchi",
   "https://kvadroom.ru/zhk-ravnovesie",
 ];
-const baseLink = "https://kvadroom.ru";
+
 const headers = {
   "User-Agent": "YandexBot",
 };
 
 async function buildComplexCheck() {
-  const results = [];
-  for (let i = 0; i < checkURLList.length; i++) {
-    const linkResult = await getApartmentCount(checkURLList[i]);
-    results.push(linkResult);
-  }
-  return results;
+  return await complexCheck(getApartmentCount, checkURLList);
 }
 
 function getApartmentCount(link) {
