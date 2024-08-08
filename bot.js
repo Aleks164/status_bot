@@ -50,7 +50,6 @@ const tryCheck = async () => {
       : [];
     const preparedGroupBuild = buildComplexErrors.length
       ? [
-          ,
           {
             message: "ЖК",
           },
