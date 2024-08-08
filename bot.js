@@ -43,7 +43,7 @@ const tryCheck = async () => {
     const preparedGroup = apartmentGroupErrors.length
       ? [
           {
-            message: "группировки жк",
+            message: "\n------группировки жк------\n",
           },
           ...apartmentGroupErrors,
         ]
@@ -51,7 +51,7 @@ const tryCheck = async () => {
     const preparedGroupBuild = buildComplexErrors.length
       ? [
           {
-            message: "ЖК",
+            message: "\n------ЖК------\n",
           },
           ...buildComplexErrors,
         ]
